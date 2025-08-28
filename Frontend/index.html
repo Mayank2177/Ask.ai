@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Query.AI</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <button class="new-chat-btn" id="newChatBtn">
+                    <i class="fas fa-plus"></i>
+                    New Chat
+                </button>
+            </div>
+            
+            <div class="chat-history">
+                <div class="chat-item active">
+                    <i class="fas fa-message"></i>
+                    <span>Current Chat</span>
+                    <button class="delete-btn"><i class="fas fa-trash"></i></button>
+                </div>
+            </div>
+            
+            <div class="sidebar-footer">
+                <button class="settings-btn" id="settingsBtn">
+                    <i class="fas fa-cog"></i>
+                    Settings
+                </button>
+                <button class="theme-toggle" id="themeToggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Chat Area -->
+        <main class="chat-container">
+            <header class="chat-header">
+                <button class="sidebar-toggle" id="sidebarToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h1>AI Assistant</h1>
+                <div class="model-selector">
+                    <select id="modelSelect">
+                        <option value="gpt-4">GPT-4</option>
+                        <option value="gpt-3.5">GPT-3.5</option>
+                        <option value="claude">Claude</option>
+                    </select>
+                </div>
+            </header>
+            <div class="attachment-preview" id="attachmentPreview" style="display: none;">
+                <div class="preview-header">
+                    <span>Attachments</span>
+                    <button class="clear-attachments" id="clearAttachments">
+                    <i class="fas fa-times"></i>
+                    </button>
+                    </div>
+                <div class="preview-items" id="previewItems"></div>
+            </div>
+            <div class="messages-container" id="messagesContainer">
+                <div class="welcome-message">
+                    <div class="welcome-content">
+                        <h2>Welcome to AI Chat</h2>
+                        <p>How can I help you today?</p>
+                        <div class="suggestion-cards">
+                            <div class="suggestion-card" data-prompt="Explain quantum computing">
+                                <i class="fas fa-atom"></i>
+                                <span>Explain quantum computing</span>
+                            </div>
+                            <div class="suggestion-card" data-prompt="Write a Python function">
+                                <i class="fas fa-code"></i>
+                                <span>Write a Python function</span>
+                            </div>
+                            <div class="suggestion-card" data-prompt="Plan a trip to Japan">
+                                <i class="fas fa-plane"></i>
+                                <span>Plan a trip to Japan</span>
+                            </div>
+                            <div class="suggestion-card" data-prompt="Explain machine learning">
+                                <i class="fas fa-brain"></i>
+                                <span>Explain machine learning</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="input-container">
+                <div class="input-wrapper">
+                    <div class="input-box">
+                        <textarea 
+                            id="messageInput" 
+                            placeholder="Message AI Assistant..." 
+                            rows="1"
+                            maxlength="4000"
+                        ></textarea>
+                        <button class="send-btn" id="sendBtn" disabled>
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                    <div class="input-footer">
+                        <span class="char-count" id="charCount">0/4000</span>
+                        <span class="shortcut-hint">Press Enter to send, Shift+Enter for new line</span>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Settings Modal -->
+    <div class="modal" id="settingsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Settings</h3>
+                <button class="close-btn" id="closeSettings">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="setting-group">
+                    <label for="apiKey">API Key</label>
+                    <input type="password" id="apiKey" placeholder="Enter your API key">
+                </div>
+                <div class="setting-group">
+                    <label for="temperature">Temperature</label>
+                    <input type="range" id="temperature" min="0" max="1" step="0.1" value="0.7">
+                    <span class="range-value">0.7</span>
+                </div>
+                <div class="setting-group">
+                    <label for="maxTokens">Max Tokens</label>
+                    <input type="number" id="maxTokens" value="2048" min="1" max="4096">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="driveModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Google Drive Files</h3>
+                <button class="close-btn" id="closeDrive">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="drive-auth" id="driveAuth">
+                    <button class="drive-signin-btn" id="driveSignIn">
+                        <i class="fab fa-google"></i>
+                        Sign in to Google Drive
+                    </button>
+                </div>
+                <div class="drive-content" id="driveContent" style="display: none;">
+                    <div class="drive-search">
+                        <input type="text" id="driveSearch" placeholder="Search files...">
+                    </div>
+                    <div class="drive-files" id="driveFiles"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
