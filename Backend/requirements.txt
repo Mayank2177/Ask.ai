@@ -2,6 +2,7 @@ fastapi
 uvicorn
 langchain
 langchain-community
+langchain-community pypdf
 beautifulsoup4
 langchain-milvus
 langchain-google-genai
