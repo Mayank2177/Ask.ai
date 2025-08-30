@@ -14,10 +14,10 @@ from langchain.schema import HumanMessage, AIMessage
 from langchain.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain.chains import ConversationChain
 
-from vectorstore import vector_db
+from vectorstore import vector_db,setup_vectorstore
 from query_parser import parse_insurance_query, get_search_terms
 from decision_engine import process_claim_decision
-from retriever import query_rag_system
+from retriever import retriever, query_rag_system, retrieve_clauses, get_retrieval_context
 
 # ====================================
 # FASTAPI APPLICATION SETUP
@@ -84,33 +84,34 @@ async def chat_endpoint(chat_message: ChatMessage):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-@app.get("/history/{user_id}", tags=["History"])
-async def get_chat_history(user_id: str):
-    """Get conversation history for a specific user"""
-    history = chatbot.get_conversation_history(user_id)
-    return {
-        "user_id": user_id,
-        "history": history,
-        "total_messages": len(history)
-    }
 
-@app.delete("/history/{user_id}", tags=["History"])
-async def clear_chat_history(user_id: str):
-    """Clear conversation history for a specific user"""
-    success = chatbot.clear_user_memory(user_id)
-    return {
-        "user_id": user_id,
-        "cleared": success,
-        "message": "Conversation history cleared successfully!" if success else "No history found for user"
-    }
+#@app.get("/history/{user_id}", tags=["History"])
+#async def get_chat_history(user_id: str):
+#    """Get conversation history for a specific user"""
+#    history = chatbot.get_conversation_history(user_id)
+#    return {
+#       "user_id": user_id,
+#        "history": history,
+#       "total_messages": len(history)
+#    }
 
-@app.get("/users", tags=["Users"])
-async def get_active_users():
-    """Get list of all users with active conversations"""
-    return {
-        "active_users": list(chatbot.user_memories.keys()),
-        "total_users": len(chatbot.user_memories)
-    }
+#@app.delete("/history/{user_id}", tags=["History"])
+#async def clear_chat_history(user_id: str):
+#    """Clear conversation history for a specific user"""
+#    success = chatbot.clear_user_memory(user_id)
+#    return {
+#        "user_id": user_id,
+#        "cleared": success,
+#        "message": "Conversation history cleared successfully!" if success else "No history found for user"
+#    }
+
+#@app.get("/users", tags=["Users"])
+#async def get_active_users():
+#    """Get list of all users with active conversations"""
+ #   return {
+ #       "active_users": list(chatbot.user_memories.keys()),
+ #       "total_users": len(chatbot.user_memories)
+ #   }
 
 @app.get("/health")
 async def health_check():
