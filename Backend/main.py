@@ -205,3 +205,35 @@ print(history.json())
 output = rag_chain.invoke({"input": query})
 
 print(output['answer'])
+
+
+
+
+
+
+# Example usage
+if __name__ == "__main__":
+    # Test queries
+    test_queries = [
+        "I'm a 46-year-old male needing knee surgery in Pune. Does my 3-month policy cover this?",
+        "What are the exclusions for dental procedures?",
+        "Can I claim maternity benefits after 2 years of policy?",
+        "Premium calculation for 35-year-old female in Mumbai"
+    ]
+    
+    for query in test_queries:
+        print(f"\nQuery: {query}")
+        result = parse_insurance_query(query)
+        print(f"Parsed: {json.dumps(result, indent=2)}")
+        print(f"Search terms: {get_search_terms(query)}")
+
+
+
+
+
+
+
+
+
+
+
