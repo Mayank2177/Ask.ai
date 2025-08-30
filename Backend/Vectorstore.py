@@ -2,6 +2,9 @@ import getpass
 import os
 from dotenv import load_dotenv
 import tempfile
+from typing import List
+from langchain.schema import Document
+import google.generativeai as genai
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain_milvus import Milvus
 from langchain.document_loaders import PyPDFLoader, Docx2txtLoader, UnstructuredEmailLoader
@@ -11,7 +14,7 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 def load_and_split_documents(file_paths: List[str]) -> List[Document]:
     """Load and split documents into chunks"""
     if not file_paths:
-        raise ValueError("No file paths provided"):
+        raise ValueError("No file paths provided")
     documents = []
     for path in file_paths:
         if not os.path.exists(path):
@@ -34,8 +37,7 @@ def load_and_split_documents(file_paths: List[str]) -> List[Document]:
 load_dotenv()
 
 gemini_api_key = os.getenv('GEMINI_API_KEY')
-
-if not api_key:
+if not gemini_api_key:
     print("WARNING: GEMINI_API_KEY not found in environment variables!")
 else:
     print("API key loaded successfully")
@@ -65,7 +67,7 @@ vector_db = Milvus(
     text_field="text",
     sparse_embedding_function=sparse_encoder,
     sparse_vector_field="sparse_vector",
-    enable_hybrid_search=True
+    enable_hybrid_search=True,
     auto_id=True,
     index_params={"index_type": "AUTOINDEX", "metric_type": "COSINE"},
     drop_old=False
@@ -84,6 +86,7 @@ def setup_vectorstore():
     print("Documents indexed successfully!")
     
     return vector_db
+
 
 
 
