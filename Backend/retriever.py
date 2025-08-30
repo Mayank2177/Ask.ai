@@ -7,16 +7,19 @@ from vectorstore import vector_db  # Import your vector store
 # Initialize Gemini model
 model = ChatGoogleGenerativeAI(
     model="gemini-2.0-flash",  # Updated to latest model
-    temperature=0.4s,
+    temperature=0.4,
     convert_system_message_to_human=True
 )
 
 # Create retriever with optimized parameters
 retriever = vector_db.as_retriever(
-    search_type="similarity",
+    search_type="hybrid",
     search_kwargs={
         "k": 5,
-        "score_threshold": 0.7  # Filter low-relevance results
+        "score_threshold": 0.7,
+        "rerank": True,  # Enable reranking for better results
+        "hybrid_ranker": "WeightedRanker",
+        "hybrid_ranker_params": {"weights": [0.5, 0.5]}  # [sparse_weight, dense_weight]
     }
 )
 
@@ -67,8 +70,4 @@ def get_retrieval_context(query: str) -> dict:
         "source_documents": [doc.page_content for doc in response["context"]],
         "query": query
     }
-
-
-
-
 
