@@ -149,22 +149,3 @@ def get_decision_summary(query: str, patient_data: Optional[Dict] = None) -> str
     decision = process_claim_decision(query, patient_data)
     return decision_engine.get_decision_summary(decision)
 
-# Example usage
-if __name__ == "__main__":
-    # Test case from your original file
-    test_query = "46-year-old male needs knee surgery in Pune with 3 months policy duration"
-    
-    # Using extracted patient data
-    patient_info = {
-        "age": 46,
-        "gender": "M",
-        "procedure": "knee surgery",
-        "location": "Pune", 
-        "duration": 3
-    }
-    
-    decision = process_claim_decision(test_query, patient_info)
-    print("Decision Result:")
-    print(json.dumps(decision, indent=2))
-    
-    print(f"\nSummary: {get_decision_summary(test_query, patient_info)}")
