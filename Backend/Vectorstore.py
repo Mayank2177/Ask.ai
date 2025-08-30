@@ -76,26 +76,3 @@ def setup_vectorstore():
     print("Documents indexed successfully!")
     
     return vector_db
-
-def query_vectorstore(query: str, k: int = 5):
-    """Query the vector store for similar documents"""
-    results = vector_db.hybrid_search(query, k=k)
-    return results
-
-# Initialize the vectorstore
-if __name__ == "__main__":
-    vectorstore = setup_vectorstore()
-    
-    # Example query
-    test_query = "What are the policy exclusions?"
-    results = query_vectorstore(test_query)
-    
-    print(f"\nQuery: {test_query}")
-    print("Results:")
-    for i, doc in enumerate(results):
-        print(f"{i+1}. {doc.page_content[:200]}...")
-
-
-
-
-
