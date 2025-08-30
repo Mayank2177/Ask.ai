@@ -62,3 +62,4 @@ if __name__ == "__main__":
     for i, doc in enumerate(results):
         print(f"{i+1}. {doc.page_content[:200]}...")
 
+
