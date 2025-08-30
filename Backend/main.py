@@ -14,8 +14,7 @@ from langchain.schema import HumanMessage, AIMessage
 from langchain.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain.chains import ConversationChain
 
-from Backend_vectorstore import vectorstore, query_vectorstore
-from Backend_vectorstore import query_vectorstore
+from vectorstore import vector_db
 from query_parser import parse_insurance_query, get_search_terms
 from decision_engine import process_claim_decision
 from retriever import query_rag_system
@@ -24,7 +23,7 @@ from retriever import query_rag_system
 # FASTAPI APPLICATION SETUP
 # ====================================
 app = FastAPI(
-    title="Query.AI chatbot",
+    title="ASK.AI chatbot",
     description="LangChain-powered Query chatbot with Gemini API",
     version="1.0.0",
     docs_url="/docs",  # Swagger UI at /docs
@@ -48,7 +47,7 @@ async def startup_event():
     """Startup event to validate configuration"""
     if not Config.GEMINI_API_KEY:
         raise ValueError("GEMINI_API_KEY environment variable is required")
-    print(f"🚀 Query.AI Chatbot started successfully!")
+    print(f"🚀 ASK.AI Chatbot started successfully!")
     print(f"📚 Ready to help businesses grow!")
 
 # ====================================
@@ -182,15 +181,16 @@ if __name__ == "__main__":
     )
 
 
-
+"""
 
 # Example client code for testing
-"""
+
 Example usage with requests:
 
 import requests
 
 # Send a chat message
+
 response = requests.post("http://localhost:8000/chat", json={
     "message": "Explain photosynthesis to me",
     "user_id": "student_123"
@@ -202,10 +202,10 @@ print(response.json())
 history = requests.get("http://localhost:8000/history/student_123")
 print(history.json())
 """
+"""
 output = rag_chain.invoke({"input": query})
 
 print(output['answer'])
-
 
 
 
@@ -269,7 +269,7 @@ if __name__ == "__main__":
 
 
 
-
+"""
 
 
 
