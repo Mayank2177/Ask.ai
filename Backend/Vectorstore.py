@@ -30,10 +30,7 @@ def load_and_split_documents(file_paths: List[str]) -> List[Document]:
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200, length_function=len,)
     return text_splitter.split_documents(documents)
 
-
-# Setup Google API Key
-if not os.environ.get("GOOGLE_API_KEY"):
-    os.environ["GOOGLE_API_KEY"] = getpass.getpass("Enter API key for Google Gemini: ")
+gemini_api_key = os.getenv('GEMINI_API_KEY')
 
 # Initialize Gemini Embedding Model
 embedding_model = GoogleGenerativeAIEmbeddings(
@@ -76,3 +73,4 @@ def setup_vectorstore():
     print("Documents indexed successfully!")
     
     return vector_db
+
