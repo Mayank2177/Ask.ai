@@ -7,7 +7,7 @@ from langchain.schema import Document
 import google.generativeai as genai
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain_milvus import Milvus
-from langchain.document_loaders import PyPDFLoader, Docx2txtLoader, UnstructuredEmailLoader
+from langchain.document_loaders import PyPDFLoader, Docx2txtLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
     
 
@@ -73,20 +73,22 @@ vector_db = Milvus(
     drop_old=False
 )
 
-def setup_vectorstore():
+def setup_vectorstore(uploaded_file_paths: List[str] = None):
     """Initialize and populate the vector store"""
-    # Load and split documents
-    file_paths = ["insurance_policy_v3.pdf", "exclusions_clause.docx"]
-    docs = load_and_split_documents(file_paths)
     
-    print(f"Loaded {len(docs)} document chunks")
+    # Use uploaded file paths if provided, otherwise fall back to default
+    if uploaded_file_paths:
+        file_paths = uploaded_file_paths
+    else:
+        print("File is not fethed successfully, try again")
+    
+    # Load and split documents
+    docs = load_and_split_documents(file_paths)
     
     # Add documents to Milvus
     vector_db.add_documents(docs)
     print("Documents indexed successfully!")
-    
     return vector_db
-
 
 
 
