@@ -1,5 +1,6 @@
 import getpass
 import os
+from dotenv import load_dotenv
 import tempfile
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain_milvus import Milvus
@@ -29,6 +30,8 @@ def load_and_split_documents(file_paths: List[str]) -> List[Document]:
     # Split into chunks for indexing
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200, length_function=len,)
     return text_splitter.split_documents(documents)
+
+load_dotenv()
 
 gemini_api_key = os.getenv('GEMINI_API_KEY')
 
@@ -81,5 +84,6 @@ def setup_vectorstore():
     print("Documents indexed successfully!")
     
     return vector_db
+
 
 
