@@ -32,6 +32,14 @@ def load_and_split_documents(file_paths: List[str]) -> List[Document]:
 
 gemini_api_key = os.getenv('GEMINI_API_KEY')
 
+if not api_key:
+    print("WARNING: GEMINI_API_KEY not found in environment variables!")
+else:
+    print("API key loaded successfully")
+
+genai.configure(api_key=gemini_api_key)
+
+
 # Initialize Gemini Embedding Model
 embedding_model = GoogleGenerativeAIEmbeddings(
     model="models/gemini-embedding-001",
@@ -47,7 +55,7 @@ vector_db = Milvus(
     embedding_function=embeddings,
     collection_name="hybrid_collection",
     connection_args={
-        "uri": db_file,  # Your Milvus URI
+        "url": db_file,  # Your Milvus URI
         "token": user_token  # If authentication is required
     },
     vector_field="dense_vector",
@@ -73,4 +81,5 @@ def setup_vectorstore():
     print("Documents indexed successfully!")
     
     return vector_db
+
 
