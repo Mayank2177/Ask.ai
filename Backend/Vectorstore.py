@@ -52,8 +52,9 @@ embedding_model = GoogleGenerativeAIEmbeddings(
 )
 
 # Create temporary database file
-db_file = tempfile.NamedTemporaryFile(prefix="milvus_", suffix=".db", delete=False).name
-print(f"The vector database will be saved to {db_file}")
+db_file= os.getenv("MILVUS_URI")
+user_token= os.getenv("MILVUS_TOKEN")
+
 
 # Initialize Milvus Vector Store
 vector_db = Milvus(
@@ -89,6 +90,7 @@ def setup_vectorstore(uploaded_file_paths: List[str] = None):
     vector_db.add_documents(docs)
     print("Documents indexed successfully!")
     return vector_db
+
 
 
 
