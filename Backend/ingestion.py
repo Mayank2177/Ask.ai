@@ -17,12 +17,13 @@ def load_and_split_documents(file_paths: List[str]) -> List[Document]:
             loader = UnstructuredEmailLoader(path)
         else:
             continue
-        docs = loader.load()
+        docs = loader.lazy_load()
         documents.extend(docs)
 
     # Split into chunks for indexing
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200, length_function=len,)
     return text_splitter.split_documents(documents)
+
 
 
 
