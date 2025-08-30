@@ -112,13 +112,12 @@ async def get_active_users():
         "total_users": len(chatbot.user_memories)
     }
 
-@app.get("/health", tags=["Health"])
+@app.get("/health")
 async def health_check():
-    """Health check endpoint"""
     return {
         "status": "healthy",
         "timestamp": datetime.now().isoformat(),
-        "model": Config.MODEL_NAME
+        "version": "1.0.0"
     }
 
 
