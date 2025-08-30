@@ -6,8 +6,8 @@ from Backend_vectorstore import vector_db  # Import your vector store
 
 # Initialize Gemini model
 model = ChatGoogleGenerativeAI(
-    model="gemini-1.5-flash",  # Updated to latest model
-    temperature=0.2,
+    model="gemini-2.0-flash",  # Updated to latest model
+    temperature=0.4s,
     convert_system_message_to_human=True
 )
 
@@ -79,6 +79,7 @@ if __name__ == "__main__":
     # Test full RAG
     answer = query_rag_system(test_query)
     print(f"Answer: {answer}")
+
 
 
 
