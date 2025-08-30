@@ -2,7 +2,7 @@ from langchain.chains.retrieval import create_retrieval_chain
 from langchain.chains.combine_documents import create_stuff_documents_chain
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain.prompts import ChatPromptTemplate
-from Backend_vectorstore import vector_db  # Import your vector store
+from vectorstore import vector_db  # Import your vector store
 
 # Initialize Gemini model
 model = ChatGoogleGenerativeAI(
@@ -68,17 +68,6 @@ def get_retrieval_context(query: str) -> dict:
         "query": query
     }
 
-# Example usage
-if __name__ == "__main__":
-    test_query = "What are the policy exclusions for pre-existing conditions?"
-    
-    # Test retrieval
-    relevant_docs = retrieve_clauses(test_query)
-    print(f"Found {len(relevant_docs)} relevant documents")
-    
-    # Test full RAG
-    answer = query_rag_system(test_query)
-    print(f"Answer: {answer}")
 
 
 
