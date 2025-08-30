@@ -47,14 +47,21 @@ print(f"The vector database will be saved to {db_file}")
 
 # Initialize Milvus Vector Store
 vector_db = Milvus(
-    embedding_function=embedding_model,
-    connection_args={"uri": db_file},
-    collection_name="RAG_Collection",
+    embedding_function=embeddings,
+    collection_name="hybrid_collection",
+    connection_args={
+        "uri": db_file,  # Your Milvus URI
+        "token": user_token  # If authentication is required
+    },
+    vector_field="dense_vector",
+    text_field="text",
+    sparse_embedding_function=sparse_encoder,
+    sparse_vector_field="sparse_vector",
+    enable_hybrid_search=True
     auto_id=True,
     index_params={"index_type": "AUTOINDEX", "metric_type": "COSINE"},
     drop_old=False
 )
-
 
 def setup_vectorstore():
     """Initialize and populate the vector store"""
@@ -72,7 +79,7 @@ def setup_vectorstore():
 
 def query_vectorstore(query: str, k: int = 5):
     """Query the vector store for similar documents"""
-    results = vector_db.similarity_search(query, k=k)
+    results = vector_db.hybrid_search(query, k=k)
     return results
 
 # Initialize the vectorstore
@@ -87,6 +94,7 @@ if __name__ == "__main__":
     print("Results:")
     for i, doc in enumerate(results):
         print(f"{i+1}. {doc.page_content[:200]}...")
+
 
 
 
