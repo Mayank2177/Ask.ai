@@ -4,26 +4,35 @@ from langchain.chains import LLMChain
 from langchain_google_genai import ChatGoogleGenerativeAI
 import json
 import re
+import os
 from typing import Dict, Optional
+from dotenv import load_dotenv
 
+# Load environment variables
+load_dotenv()
+gemini_api_key = os.getenv('GEMINI_API_KEY')
 
-llm = ChatGoogleGenerativeAI(
-    model="gemini-2.0-flash",
-    temperature=0.4,
-    convert_system_message_to_human=True
-)
+if not gemini_api_key:
+    raise ValueError("GEMINI_API_KEY not found in environment variables!")
 
 class QueryParser:
     """Parse and structure healthcare insurance queries for RAG retrieval"""
-    
+
     def __init__(self):
+        # Initialize LLM inside the class
+        self.llm = ChatGoogleGenerativeAI(
+            model="gemini-2.0-flash",
+            temperature=0.4,
+            convert_system_message_to_human=True,
+            google_api_key=gemini_api_key  # Add API key
+        )
+
         # Prompt to structure the query
         self.structure_prompt = PromptTemplate.from_template("""
 You are an expert healthcare insurance query analyzer. Extract structured information from the following query.
-
 Return ONLY valid JSON format with these fields:
 - age: integer or null if not mentioned
-- gender: "M", "F", or null if not mentioned  
+- gender: "M", "F", or null if not mentioned
 - procedure: string describing medical procedure or null
 - location: string for city/state or null
 - policy_duration_months: integer or null
@@ -33,9 +42,9 @@ Return ONLY valid JSON format with these fields:
 Query: {query}
 
 JSON Output:""")
-        
-        self.structure_chain = LLMChain(llm=llm, prompt=self.structure_prompt)
-        
+
+        self.structure_chain = LLMChain(llm=self.llm, prompt=self.structure_prompt)
+
         # Query enhancement for better retrieval
         self.enhancement_prompt = PromptTemplate.from_template("""
 Based on this structured insurance query data, generate 2-3 alternative search phrases that would help find relevant policy documents.
@@ -45,19 +54,19 @@ Structured Data: {structured_data}
 
 Generate search phrases focusing on:
 1. Policy coverage terms
-2. Medical procedure terminology  
+2. Medical procedure terminology
 3. Exclusion clauses
 
 Search Phrases:""")
-        
-        self.enhancement_chain = LLMChain(llm=llm, prompt=self.enhancement_prompt)
+
+        self.enhancement_chain = LLMChain(llm=self.llm, prompt=self.enhancement_prompt)
 
     def parse_query(self, query: str) -> Dict:
         """Parse query into structured format"""
         try:
             # Get structured output
             structured_output = self.structure_chain.run(query=query)
-            
+
             # Clean and parse JSON
             json_match = re.search(r'\{.*\}', structured_output, re.DOTALL)
             if json_match:
@@ -73,12 +82,11 @@ Search Phrases:""")
                     "query_type": "general",
                     "keywords": [query]
                 }
-            
+
             # Add original query
             structured_data["original_query"] = query
-            
             return structured_data
-            
+
         except Exception as e:
             print(f"Error parsing query: {e}")
             return {
@@ -99,15 +107,14 @@ Search Phrases:""")
                 original_query=parsed_query["original_query"],
                 structured_data=json.dumps(parsed_query, indent=2)
             )
-            
+
             # Extract search phrases
             phrases = [phrase.strip() for phrase in enhanced_output.split('\n') if phrase.strip()]
-            
+
             # Combine with original keywords
             all_phrases = parsed_query.get("keywords", []) + phrases
-            
             return list(set(all_phrases))  # Remove duplicates
-            
+
         except Exception as e:
             print(f"Error enhancing query: {e}")
             return parsed_query.get("keywords", [parsed_query["original_query"]])
@@ -116,24 +123,25 @@ Search Phrases:""")
         """Complete query processing pipeline"""
         # Parse query
         structured_data = self.parse_query(query)
-        
+
         # Enhance for retrieval
         enhanced_phrases = self.enhance_for_retrieval(structured_data)
+
         structured_data["enhanced_search_phrases"] = enhanced_phrases
-        
         return structured_data
+
 
 # Initialize parser instance
 query_parser = QueryParser()
+
 
 # Utility functions for integration
 def parse_insurance_query(query: str) -> Dict:
     """Main function to parse insurance queries"""
     return query_parser.process_query(query)
 
+
 def get_search_terms(query: str) -> list:
     """Extract search terms for vector retrieval"""
     parsed = parse_insurance_query(query)
     return parsed.get("enhanced_search_phrases", [query])
-
-
