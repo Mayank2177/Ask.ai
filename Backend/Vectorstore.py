@@ -60,7 +60,7 @@ vector_db = Milvus(
     embedding_function=embeddings,
     collection_name="hybrid_collection",
     connection_args={
-        "url": db_file,  # Your Milvus URI
+        "uri": db_file,  # Your Milvus URI
         "token": user_token  # If authentication is required
     },
     vector_field="dense_vector",
@@ -89,6 +89,7 @@ def setup_vectorstore(uploaded_file_paths: List[str] = None):
     vector_db.add_documents(docs)
     print("Documents indexed successfully!")
     return vector_db
+
 
 
 
