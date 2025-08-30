@@ -2,7 +2,8 @@ fastapi
 uvicorn
 langchain
 langchain-community
-langchain-community pypdf
+langchain-community
+python-dotenv
 beautifulsoup4
 langchain-milvus
 langchain-google-genai
