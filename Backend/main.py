@@ -231,6 +231,24 @@ if __name__ == "__main__":
 
 
 
+# Example usage
+if __name__ == "__main__":
+    test_query = "What are the policy exclusions for pre-existing conditions?"
+    
+    # Test retrieval
+    relevant_docs = retrieve_clauses(test_query)
+    print(f"Found {len(relevant_docs)} relevant documents")
+    
+    # Test full RAG
+    answer = query_rag_system(test_query)
+    print(f"Answer: {answer}")
+
+
+
+
+
+
+
 
 
 
