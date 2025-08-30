@@ -5,11 +5,6 @@ from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain_milvus import Milvus
 from langchain.document_loaders import PyPDFLoader, Docx2txtLoader, UnstructuredEmailLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-
-
-# Setup Google API Key
-if not os.environ.get("GOOGLE_API_KEY"):
-    os.environ["GOOGLE_API_KEY"] = getpass.getpass("Enter API key for Google Gemini: ")
     
 
 def load_and_split_documents(file_paths: List[str]) -> List[Document]:
@@ -35,6 +30,10 @@ def load_and_split_documents(file_paths: List[str]) -> List[Document]:
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200, length_function=len,)
     return text_splitter.split_documents(documents)
 
+
+# Setup Google API Key
+if not os.environ.get("GOOGLE_API_KEY"):
+    os.environ["GOOGLE_API_KEY"] = getpass.getpass("Enter API key for Google Gemini: ")
 
 # Initialize Gemini Embedding Model
 embedding_model = GoogleGenerativeAIEmbeddings(
@@ -88,6 +87,7 @@ if __name__ == "__main__":
     print("Results:")
     for i, doc in enumerate(results):
         print(f"{i+1}. {doc.page_content[:200]}...")
+
 
 
 
