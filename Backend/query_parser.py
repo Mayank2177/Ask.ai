@@ -8,7 +8,7 @@ from typing import Dict, Optional
 
 
 llm = ChatGoogleGenerativeAI(
-    model="gemini-1.5-flash",
+    model="gemini-2.0-flash",
     temperature=0.4,
     convert_system_message_to_human=True
 )
