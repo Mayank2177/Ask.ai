@@ -26,11 +26,11 @@ Follow the steps below to set up and run the Query.AI project:
 1. Clone the repository:
    ```bash
    git clone https://github.com/MrShadow335/Query.ai.git
-   cd Frontend
    ```
 
 2. Install the required dependencies:
    ```bash
+   cd Backend
    pip install -r requirements.txt
    ```
 
@@ -44,6 +44,9 @@ Follow the steps below to set up and run the Query.AI project:
 
 5. Access the application:
    Run the html file to start using Ask.ai.
+      ```bash
+   cd Frontend
+   ```
    #### if uses chrome:
    ```bash
    google-chrome index.html
