@@ -44,7 +44,12 @@ Follow the steps below to set up and run the Query.AI project:
 
 5. Access the application:
    Run the html file to start using Ask.ai.
-   '''bash
+   #### if uses chrome:
+   ```bash
    google-chrome index.html
-   '''
+   ```
+   #### else:
+   ```bash
+   start index.html
+   ```
 Ensure you have Python and any other required tools installed before proceeding with the setup.
