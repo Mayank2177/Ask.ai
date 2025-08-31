@@ -157,14 +157,34 @@ class ChatApp {
         this.updateCharCount();
         this.updateSendButton();
         
-        // Show typing indicator
-        this.showTypingIndicator();
         
-        // Simulate AI response
-        setTimeout(() => {
+        // Show typing indicator (already exists)
+        this.showTypingIndicator();
+
+        // Use a unique user ID (can use a fixed string or generate one)
+        const userId = "web_user_1"; // choose an appropriate method if logged in
+
+        fetch('http://localhost:8000/chat', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                message: message,
+                user_id: userId      // If you collect user ID, use that—otherwise, use a default or random value
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
             this.hideTypingIndicator();
-            this.addMessage(this.generateAIResponse(message), 'assistant');
-        }, 1000 + Math.random() * 2000);
+            // The backend returns { response: "...", timestamp: "...", user_id: "..." }
+            this.addMessage(data.response, 'assistant');
+        })
+        .catch(error => {
+            this.hideTypingIndicator();
+            this.addMessage("Error: Cannot reach server.", 'assistant');
+            console.error(error);
+        });
     }
 
     addMessage(content, sender) {
@@ -312,3 +332,4 @@ if ('serviceWorker' in navigator) {
             .catch(error => console.log('SW registration failed'));
     });
 }
+
