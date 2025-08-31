@@ -81,15 +81,14 @@ async def chat_endpoint(chat_message: ChatMessage):
             message=chat_message.message,
             user_id=chat_message.user_id
         )
-        
         return ChatResponse(
             response=response,
             timestamp=datetime.now().isoformat(),
             user_id=chat_message.user_id
         )
-        
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
 
 
 #@app.get("/history/{user_id}", tags=["History"])
