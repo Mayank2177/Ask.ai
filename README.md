@@ -1,10 +1,10 @@
-# Query.AI
-A highly Interactive RAG system that uses Large Language Models (LLMs) to process natural language queries and retrieve relevant information from large unstructured documents such as policy documents, contracts, and emails.
+# Ask.AI
+A highly Interactive RAG system that uses Large Language Models (LLMs) to process natural language queries and retrieve relevant information from large unstructured documents such as policy documents, and contracts.
 
 ### Features
 
 #### (i)Parsed Query:
-Input documents may include PDFs, Word files, or emails. It Parse and structure the query to identify key details such as age, procedure, location, and policy duration even if the query is vague, incomplete, or written in plain English.
+Input documents may include PDFs, or Word files. It Parse and structure the query to identify key details such as age, procedure, location, and policy duration even if the query is vague, incomplete, or written in plain English.
 
 #### (ii) Semantic Search:
 Search and retrieve relevant clauses or rules from the provided documents using semantic understanding rather than simple keyword matching.
@@ -26,7 +26,7 @@ Follow the steps below to set up and run the Query.AI project:
 1. Clone the repository:
    ```bash
    git clone https://github.com/MrShadow335/Query.ai.git
-   cd Query.ai
+   cd Frontend
    ```
 
 2. Install the required dependencies:
@@ -39,10 +39,12 @@ Follow the steps below to set up and run the Query.AI project:
 
 4. Run the application:
    ```bash
-   uvicorn main:app --reload --host 0.0.0.0 --port 8000
+   uvicorn main:app --reload
    ```
 
 5. Access the application:
-   Navigate to the provided URL in your browser to start using Query.AI.
-
+   Run the html file to start using Ask.ai.
+   '''bash
+   google-chrome index.html
+   '''
 Ensure you have Python and any other required tools installed before proceeding with the setup.
