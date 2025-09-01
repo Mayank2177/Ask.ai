@@ -29,10 +29,6 @@ class ChatApp {
         this.settingsModal = document.getElementById('settingsModal');
         this.closeSettings = document.getElementById('closeSettings');
         
-        // Settings elements
-        this.apiKeyInput = document.getElementById('apiKey');
-        this.temperatureInput = document.getElementById('temperature');
-        this.maxTokensInput = document.getElementById('maxTokens');
     }
 
     bindEvents() {
@@ -98,7 +94,25 @@ class ChatApp {
         const icon = this.themeToggle.querySelector('i');
         icon.className = savedTheme === 'light' ? 'fas fa-moon' : 'fas fa-sun';
     }
-
+    // Multimodal Upload handlers
+    $('fileBtn').onclick = () => $('fileInput').click();
+    
+    $('fileInput').onchange = e => handleAttachments(e.target.files, 'file');
+    
+    function handleAttachments(files, type) {
+      [...files].forEach(file => {
+        state.attachments.push({
+          id: Date.now()+Math.random(),
+          name: file.name,
+          type,
+          url: URL.createObjectURL(file),
+          size: file.size,
+          file,
+        });
+      });
+      renderAttachmentPreview();
+    }
+    
     handleInput(e) {
         this.adjustTextareaHeight();
         this.updateCharCount();
@@ -332,4 +346,5 @@ if ('serviceWorker' in navigator) {
             .catch(error => console.log('SW registration failed'));
     });
 }
+
 
