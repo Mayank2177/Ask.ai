@@ -35,10 +35,10 @@ Follow the steps below to set up and run the Query.AI project:
    ```
 
    ```bash
-   export
-   export
-   export
-   export
+   export GEMINI_API_KEY=your_gemini_api_key_here
+   export MILVUS_TOKEN= <your_milvus_api_key>
+   export LANGSMITH_API_KEY=<your_langsmith_api_key>
+
    ```
 3. Add your configuration files:
    Place any necessary configuration files (e.g., `.env` files) in the project directory.
