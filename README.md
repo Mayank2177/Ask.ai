@@ -34,6 +34,12 @@ Follow the steps below to set up and run the Query.AI project:
    pip install -r requirements.txt
    ```
 
+   ```bash
+   export
+   export
+   export
+   export
+   ```
 3. Add your configuration files:
    Place any necessary configuration files (e.g., `.env` files) in the project directory.
 
@@ -44,9 +50,6 @@ Follow the steps below to set up and run the Query.AI project:
 
 5. Access the application:
    Run the html file to start using Ask.ai.
-      ```bash
-   cd Frontend
-   ```
    #### if uses chrome:
    ```bash
    google-chrome index.html
