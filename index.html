@@ -489,14 +489,46 @@ $('messageInput').onkeydown = function(e){
     if (!$('sendBtn').disabled) sendMessage();
   }
 };
-function sendMessage(){
-  if (state.isTyping) return;
-  // User message
-  state.messages.push({
-    sender:'user',
-    text:$('messageInput').value.trim(),
-    attachments: [...state.attachments],
-  });
+
+// Replace the existing sendMessage function with this:
+async function sendMessage() {
+    const userInput = document.getElementById('user-input');
+    const message = userInput.value.trim();
+    
+    if (!message) return;
+
+    // Add user message to chat
+    addMessageToChat('user', message);
+    userInput.value = '';
+
+    try {
+        // Make API call to your FastAPI backend
+        const response = await fetch('http://localhost:8000/chat', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                message: message,
+                user_id: 'user_123' // You can make this dynamic
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        
+        // Add bot response to chat
+        addMessageToChat('bot', data.response);
+        
+    } catch (error) {
+        console.error('Error:', error);
+        addMessageToChat('bot', 'Sorry, I encountered an error. Please try again.');
+    }
+}
+
   $('messageInput').value = '';
   $('charCount').innerText = '0';
   $('sendBtn').disabled = true;
@@ -565,4 +597,5 @@ function getIcon(obj){
 </script>
 </body>
 </html>
+
 
