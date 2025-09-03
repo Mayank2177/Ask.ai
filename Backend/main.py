@@ -43,6 +43,17 @@ app.add_middleware(
 # Initialize chatbot
 chatbot = QueryChatbot()
 
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
+
+# Add this after creating the app
+app.mount("/static", StaticFiles(directory="static"), name="static")
+
+@app.get("/")
+async def serve_frontend():
+    return FileResponse("index.html")
+
+
 @app.on_event("startup")
 async def startup_event():
     """Startup event to validate configuration"""
