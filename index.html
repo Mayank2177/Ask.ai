@@ -492,59 +492,55 @@ $('messageInput').onkeydown = function(e){
 
 // Replace the existing sendMessage function with this:
 async function sendMessage() {
-    const userInput = document.getElementById('user-input');
-    const message = userInput.value.trim();
-    
-    if (!message) return;
+  const userInput = $('messageInput');
+  const messageText = userInput.value.trim();
+  const attachments = [...state.attachments];
 
-    // Add user message to chat
-    addMessageToChat('user', message);
-    userInput.value = '';
+  if (!messageText && attachments.length === 0) return;
 
-    try {
-        // Make API call to your FastAPI backend
-        const response = await fetch('http://localhost:8000/chat', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                message: message,
-                user_id: 'user_123' // You can make this dynamic
-            })
-        });
+  // Add user message to chat state
+  state.messages.push({
+    sender: 'user',
+    text: messageText,
+    attachments: attachments,
+  });
 
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const data = await response.json();
-        
-        // Add bot response to chat
-        addMessageToChat('bot', data.response);
-        
-    } catch (error) {
-        console.error('Error:', error);
-        addMessageToChat('bot', 'Sorry, I encountered an error. Please try again.');
-    }
-}
-
-  $('messageInput').value = '';
+  // Clear input field and attachments
+  userInput.value = '';
   $('charCount').innerText = '0';
   $('sendBtn').disabled = true;
-  $('attachmentPreview').style.display='none';
-  state.attachments=[]; renderAttachmentPreview();
+  state.attachments = [];
+  renderAttachmentPreview();
+
+  // Render the user's message and show typing indicator
   renderMessages();
   showTyping();
-  setTimeout(() => {
-    hideTyping();
-    state.messages.push({
-      sender:'ai',
-      text:generateAIResponse(),
-      attachments:[], // simulate response, can add logic for multimodal output
+
+  try {
+    // NOTE: For a real app, you'd use FormData to send files.
+    // This example just sends the text.
+    const response = await fetch('http://localhost:8000/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        message: messageText,
+        user_id: 'user_123' // This can be dynamic
+      })
     });
-    renderMessages();
-  }, 1400);
+
+    hideTyping();
+    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+
+    const data = await response.json();
+    state.messages.push({ sender: 'ai', text: data.response });
+  } catch (error) {
+    console.error('Error:', error);
+    hideTyping();
+    state.messages.push({ sender: 'ai', text: 'Sorry, I encountered an error. Please try again.' });
+  }
+
+  // Render the final state with the bot's response
+  renderMessages();
 }
 
 function showTyping(){
@@ -597,5 +593,3 @@ function getIcon(obj){
 </script>
 </body>
 </html>
-
-
