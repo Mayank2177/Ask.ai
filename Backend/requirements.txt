@@ -7,3 +7,5 @@ python-dotenv
 beautifulsoup4
 langchain-milvus
 langchain-google-genai
+google.generativeai
+config
