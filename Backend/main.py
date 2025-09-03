@@ -53,6 +53,16 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 async def serve_frontend():
     return FileResponse("index.html")
 
+# Models
+class ChatMessage(BaseModel):
+    message: str
+    user_id: str
+
+class ChatResponse(BaseModel):
+    response: str
+    timestamp: str
+    user_id: str
+
 
 @app.on_event("startup")
 async def startup_event():
