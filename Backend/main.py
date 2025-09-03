@@ -30,21 +30,15 @@ app = FastAPI(
     redoc_url="/redoc"  # ReDoc at /redoc
 )
 
-origins = [
-    "http://localhost:3000",    # If serving HTML from port 3000
-    "http://127.0.0.1:8080",    # If serving HTML from port 8080  
-    "http://localhost:8080",    # Alternative localhost format
-    # Add your production domain here when deploying
-]
-
-# Add CORS middleware
+# Fix the CORS middleware setup
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=["http://localhost:3000", "http://127.0.0.1:8080", "http://localhost:8080"],
     allow_credentials=True,
     allow_methods=["GET", "POST", "PUT", "DELETE"],
     allow_headers=["*"],
 )
+
 
 # Initialize chatbot
 chatbot = QueryChatbot()
