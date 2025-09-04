@@ -19,6 +19,10 @@ Return a structured JSON response containing: Decision (e.g., approved or reject
 ### Applications:
 This system can be applied in domains such as insurance, legal compliance, human resources, and contract management.
 
+
+### Colab Notebook
+https://colab.research.google.com/drive/17NtC-wSuWV8QJFPD6P52n5qerT2eLqyk
+
 ### Setup
 
 Follow the steps below to set up and run the Query.AI project:
@@ -34,28 +38,22 @@ Follow the steps below to set up and run the Query.AI project:
    pip install -r requirements.txt
    ```
 
-   ```bash
+3. Add your configuration files:
+   Place any necessary configuration files (e.g., `.env` files) in the project directory.
+      ```bash
    export GEMINI_API_KEY=your_gemini_api_key_here
    export MILVUS_TOKEN= <your_milvus_api_key>
    export LANGSMITH_API_KEY=<your_langsmith_api_key>
 
    ```
-3. Add your configuration files:
-   Place any necessary configuration files (e.g., `.env` files) in the project directory.
 
 4. Run the application:
    ```bash
    uvicorn main:app --reload
    ```
+   or
+      ```bash
+   python main.py
+   ```
 
-5. Access the application:
-   Run the html file to start using Ask.ai.
-   #### if uses chrome:
-   ```bash
-   google-chrome index.html
-   ```
-   #### else:
-   ```bash
-   start index.html
-   ```
 Ensure you have Python and any other required tools installed before proceeding with the setup.
