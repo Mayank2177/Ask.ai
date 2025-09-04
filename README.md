@@ -29,7 +29,7 @@ Follow the steps below to set up and run the Query.AI project:
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/MrShadow335/Query.ai.git
+   git clone https://github.com/Mayank2177/Ask.ai.git
    ```
 
 2. Install the required dependencies:
