@@ -21,7 +21,11 @@ This system can be applied in domains such as insurance, legal compliance, human
 
 
 ### Colab Notebook
-https://colab.research.google.com/drive/17NtC-wSuWV8QJFPD6P52n5qerT2eLqyk
+   ```bash
+   https://colab.research.google.com/drive/17NtC-wSuWV8QJFPD6P52n5qerT2eLqyk
+   ```
+open this notebook in Google colab and provide essential credential like "LANGSMITH_API_KEY", "GEMINI_API_KEY".
+Copy the path of Document to be test and ask relevant question accordingly.
 
 ### Setup
 
